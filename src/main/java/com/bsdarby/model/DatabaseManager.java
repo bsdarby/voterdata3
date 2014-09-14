@@ -45,7 +45,7 @@ public class DatabaseManager {
 	 * </pre>
 	 */
 	public DatabaseManager( String username, String password ) {
-		if (username == "CANCELED" && password == "CANCELED")
+		if (username.contentEquals("CANCELED") && password.contentEquals("CANCELED"))
 		{
 			System.exit(0);
 		}
