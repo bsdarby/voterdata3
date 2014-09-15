@@ -60,7 +60,7 @@ public class VoterTableModel extends AbstractTableModel {
 	 * Returns the number of columns to be displayed for the ResultSet.  Note that
 	 * this does not return the number of columns IN the ResultSet.
 	 * This method always returns 8 for Last Name, First Name, Phone,
-	 * Street Numer, Street, Unit Number, Precinct, and Party.
+	 * Street Number, Street, Unit Number, Precinct, and Party.
 	 * <pre>
 	 * PRE:		true
 	 * POST:	The number 10 is returned.

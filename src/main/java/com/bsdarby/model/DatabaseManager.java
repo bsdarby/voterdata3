@@ -2,8 +2,7 @@ package com.bsdarby.model;
 
 import javax.swing.*;
 import java.sql.*;
-import java.sql.Date;
-import java.util.*;
+
 
 /**
  * Class in voterdata2/com.bsdarby.model.
@@ -29,7 +28,7 @@ public class DatabaseManager {
 	/* DatabaseManager Constructor */
 
 	/**
-	 * This constructor connects to the MySQL database at jdbc:mysql://sql.useractive.com:3306.
+	 * This constructor connects to the MySQL database at jdbc:mysql://localhost:3306.
 	 * It creates instances of Statement and ResultSet that will be used by the other methods
 	 * in the class.  It also checks to see if the "listings" table already exists.  If it does,
 	 * it simply returns to the caller.  Otherwise, it instantiates the method to create a
