@@ -92,6 +92,7 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 					btnHistory,
 					btnPrint,
 					btnClear,
+					btnExport,
 					btnHelp,
 					btnExit;
 	JLabel lblSpacer,
@@ -369,6 +370,10 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 		btnClear.setForeground(Color.green.darker().darker());
 		btnClear.setFont(sansLabel);
 
+		btnExport = new JButton("Export");
+		btnExport.setForeground(Color.blue.darker().darker());
+		btnExport.setFont(sansLabel);
+
 		btnHelp = new JButton("Help");
 		btnHelp.setForeground(Color.green.darker().darker());
 		btnHelp.setFont(sansLabel);
@@ -423,7 +428,7 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 		ctlPanelSouth.add(btnSearch);
 		ctlPanelSouth.add(btnPrint);
 		ctlPanelSouth.add(btnClear);
-//		ctlPanelSouth.add(btnHistory);
+		ctlPanelSouth.add(btnExport);
 		ctlPanelSouth.add(btnHelp);
 		ctlPanelSouth.add(btnExit);
 		ctlPanelSouth.validate();
@@ -514,7 +519,6 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 				tfCity.setText("");
 				tfParty.setText("");
 				tfNumVotes.setText("2");
-				tfAgeMin.setText("17");
 				tfAgeMax.setText("130");
 				tfRegAgo.setText("0");
 				tfPrecinct.requestFocus();
@@ -792,7 +796,7 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 							"szNameFirst, voters.lVoterUniqueID ";
 
 			if (numvotes < 0 || numvotes == null) { numvotes = 0; tfNumVotes.setText("0"); }
-			if (ageMin.length() == 0) { ageMin = "17"; tfAgeMin.setText("17"); }
+//			if (ageMin.length() == 0) { ageMin = "17"; tfAgeMin.setText("17"); }
 			if (ageMax.length() == 0) { ageMax = "130"; tfAgeMax.setText("130"); }
 			if (regago < 0 || regago == null) { regago = 0; tfRegAgo.setText("0"); }
 //			System.out.println("numvotes = "+ numvotes +", ageMin = "+ ageMin +", ageMax = "+ ageMax +",
@@ -871,7 +875,8 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 				lblVoterPanel.setText("1 Voter");
 			} else
 			{
-				lblVoterPanel.setText(String.format(Locale.US, "%,d Voters", rowCount));
+				Integer households = getHouseholds(resultSet);
+				lblVoterPanel.setText(String.format(Locale.US, "%,d Voters in %,d Households", rowCount, households));
 			}
 
 			dataPanelVoters.add(voterPane);
@@ -945,6 +950,31 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 		}
 	}
 
+	public Integer getHouseholds(ResultSet resultSet) {
+		String thisAddress, prevAddress = "";
+		Integer households = 0;
+		try
+		{
+			resultSet.beforeFirst();
+			while (resultSet.next())
+			{
+				thisAddress = resultSet.getString(6);
+//				System.out.println("thisAddress: " + thisAddress + ", prevAddress: " + prevAddress);
+				if (!prevAddress.equals(thisAddress))
+				{
+					households += 1;
+					prevAddress = thisAddress;
+				}
+			}
+		} catch (SQLException e)
+		{
+			System.out.println("SQL Exception caught at " +
+							"PrintWalkList/getCounts.");
+			DatabaseManager.printSQLException(e);
+			return -1;
+		}
+		return households;
+	}
 
 	public void print() {
 
