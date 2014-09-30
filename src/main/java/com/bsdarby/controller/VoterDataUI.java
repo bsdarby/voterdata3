@@ -483,6 +483,12 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 			}
 		});
 
+		btnExport.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ExportList exportList;
+				exportList =  new ExportList(resultSetW);
+		}});
+
 		btnHelp.addActionListener(new ActionListener() {
 			public void actionPerformed( ActionEvent evt ) {
 				help();
