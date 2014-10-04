@@ -3,6 +3,7 @@ package com.bsdarby.controller;
 import com.bsdarby.model.DatabaseManager;
 import com.bsdarby.model.HistoryTableModel;
 import com.bsdarby.model.VoterTableModel;
+import com.bsdarby.controller.ExportList;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -40,7 +41,8 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 	int vpHeight = height * 4 / 5;
 	int hpHeight = height - vpHeight;
 	String tooltipText;
-	ResultSet resultSetW;
+	ResultSet resultSetW = null;
+	ResultSet resultSet = null;
 	Integer voterID = 0;
 	int voterIDTrigger = 0;
 	private PageFormat pageFormat;
@@ -486,22 +488,19 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 		btnExport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ExportList exportList;
-				exportList =  new ExportList(resultSetW);
+				exportList =  new ExportList(resultSet);
 		}});
 
 		btnHelp.addActionListener(new ActionListener() {
 			public void actionPerformed( ActionEvent evt ) {
 				help();
-			}
-		});
+		}});
 
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed( ActionEvent evt ) {
 				voterDB.close();
 				System.exit(0);
-			}
-		});
-
+		}});
 
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed( ActionEvent e ) {
@@ -584,11 +583,11 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 
 		boolean boolShowTrans = false;
 		boolean boolNumVotes = false;
-		ResultSet resultSet = null;
 		String whereClause;
 		String selectNumVotes;
 		String having;
 		String groupBy;
+		String orderBy;
 		String query;
 
 		String last = SafeChar.text1(tfLastName.getText());
@@ -710,67 +709,67 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 						street.length() > 0)
 		{
 
-			whereClause = " WHERE";
+			whereClause = "WHERE ";
 
 			if (last.length() > 0) {
-				whereClause += (" voters.szNameLast LIKE '" + last + "'");
+				whereClause += ("voters.szNameLast LIKE '" + last + "' ");
 			}
 			if (first.length() > 0) {
 				if (whereClause.length() > 6) {
-					whereClause += " AND";
+					whereClause += "AND ";
 				}
-				whereClause += (" voters.szNameFirst LIKE '" + first + "'");
+				whereClause += ("voters.szNameFirst LIKE '" + first + "' ");
 			}
 			if (party.length() > 0) {
 				if (whereClause.length() > 6) {
-					whereClause += " AND";
+					whereClause += "AND ";
 				}
-				whereClause += (" voters.szPartyName LIKE '" + party + "'");
+				whereClause += ("voters.szPartyName LIKE '" + party + "' ");
 			}
 			if (city.length() > 0) {
 				if (whereClause.length() > 6) {
-					whereClause += " AND";
+					whereClause += "AND ";
 				}
-				whereClause += (" voters.szSitusCity LIKE '" + city + "'");
+				whereClause += ("voters.szSitusCity LIKE '" + city + "' ");
 			}
 			if (precinct.length() > 0) {
 				if (whereClause.length() > 6) {
-					whereClause += " AND";
+					whereClause += "AND ";
 				}
-				whereClause += (" voters.sPrecinctID LIKE '" + precinct + "'");
+				whereClause += ("voters.sPrecinctID LIKE '" + precinct + "' ");
 			}
 			if (zip.length() > 0) {
 				if (whereClause.length() > 6) {
-					whereClause += " AND";
+					whereClause += "AND ";
 				}
-				whereClause += (" voters.sSitusZip LIKE '" + zip + "'");
+				whereClause += ("voters.sSitusZip LIKE '" + zip + "' ");
 			}
 			if (streetno.length() > 0) {
 				if (whereClause.length() > 6) {
-					whereClause += " AND";
+					whereClause += "AND ";
 				}
-				whereClause += (" voters.sHouseNum LIKE '" + streetno + "'");
+				whereClause += ("voters.sHouseNum LIKE '" + streetno + "' ");
 			}
 			if (evenOnly)
 			{
 				if (whereClause.length() > 6)
 				{
-					whereClause += " AND";
+					whereClause += "AND ";
 				}
-				whereClause += (" (voters.sHouseNum%2=0)");
+				whereClause += ("(voters.sHouseNum%2=0) ");
 			} else if (oddOnly)
 			{
 				if (whereClause.length() > 6)
 				{
-					whereClause += " AND";
+					whereClause += "AND ";
 				}
-				whereClause += (" (voters.sHouseNum%2=1)");
+				whereClause += ("(voters.sHouseNum%2=1) ");
 			}
 			if (street.length() > 0) {
 				if (whereClause.length() > 6) {
-					whereClause += " AND";
+					whereClause += "AND ";
 				}
-				whereClause += (" voters.szStreetName LIKE '" + street + "'");
+				whereClause += ("voters.szStreetName LIKE '" + street + "' ");
 			}
 
 			selectNumVotes = "SELECT " +
@@ -786,20 +785,20 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 							"voters.szPartyName, " +
 							"dtBirthDate, " +
 							"dtOrigRegDate, " +
-							"count(IF(history.szCountedFlag = 'YES', 1, NULL)) " +
-							"as votes, " +
 							"DATEDIFF(CURDATE(), dtBirthDate) " +
 							"AS age, " +
 							"DATEDIFF(CURDATE(), dtOrigRegDate) " +
 							"AS agoreg " +
 							"FROM voters " +
-							"JOIN history ON history.lVoterUniqueID = voters.lVoterUniqueID";
+							"JOIN history ON history.lVoterUniqueID = voters.lVoterUniqueID ";
 
-			groupBy = " GROUP BY " +
+			groupBy = "GROUP BY voters.lVoterUniqueID ";
+
+			orderBy = "ORDER BY " +
 							"CAST(sPrecinctID as unsigned), szStreetName, " +
 							"sStreetSuffix, CAST(sHouseNum as unsigned), " +
 							"CAST(sUnitNum as unsigned), szNameLast, " +
-							"szNameFirst, voters.lVoterUniqueID ";
+							"szNameFirst, dtBirthDate DESC, dtOrigRegDate DESC ";
 
 			if (numvotes < 0 || numvotes == null) { numvotes = 0; tfNumVotes.setText("0"); }
 //			if (ageMin.length() == 0) { ageMin = "17"; tfAgeMin.setText("17"); }
@@ -809,14 +808,15 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 // regago = "+ regago);
 
 			having = " HAVING " +
-							"votes >= " +
+							"count(IF(history.szCountedFlag = 'YES', 1, NULL)) >= " +
 							numvotes +
 							" AND age/365 >= " +
 							ageMin +
 							" AND ((age)/365)-1 <= " +
 							ageMax +
 							" AND agoreg/365 >= " +
-							regago;
+							regago +
+							" ";
 
 /*
 			SELECT *, voters.lVoterUniqueID, count(IF(history.szCountedFlag = 'YES',1,NULL))
@@ -831,8 +831,8 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 //			System.out.println("whereClause:" + whereClause);
 //			System.out.println("groupBy:" + groupBy);
 //			System.out.println("having: " + having);
+			query = selectNumVotes + whereClause + groupBy + having + orderBy;
 //			System.out.println("QUERY: " + query);
-			query = selectNumVotes + whereClause + groupBy + having;
 			resultSet = doQuery(query, voterDB);
 		} else
 		{
