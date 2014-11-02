@@ -80,6 +80,7 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 					tfLastName,
 					tfPrecinct,
 					tfZip,
+					tfElectionExclude,
 					tfLat,
 					tfLong,
 					tfStreet,
@@ -102,12 +103,15 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 					lblFirst,
 					lblPrecinct,
 					lblZip,
+					lblElectionExclude,
 					lblLat,
 					lblLong,
 					lblStreet,
 					lblStreetNo,
 					lblCity,
 					lblParty,
+					lblMailVoter,
+					lblPollVoter,
 					lblAgeMin,
 					lblAgeMax,
 					lblNumVotes,
@@ -116,7 +120,9 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 					lblVoterPanel,
 					lblHistoryPanel;
 	JCheckBox cbEven,
-					cbOdd;
+					cbOdd,
+					cbMailVoter,
+					cbPollVoter;
 
 	public VoterDataUI( final DatabaseManager voterDB ) {
 		this.voterDB = voterDB;
@@ -168,6 +174,16 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 
 		//noinspection UnusedAssignment
 			/* Labels */
+		lblMailVoter = new JLabel("Mail Voters");
+		lblMailVoter.setHorizontalAlignment(JLabel.RIGHT);
+		lblMailVoter.setForeground(Color.blue.darker().darker());
+		lblMailVoter.setFont(sansLabel);
+
+		lblPollVoter = new JLabel("Poll Voters");
+		lblPollVoter.setHorizontalAlignment(JLabel.RIGHT);
+		lblPollVoter.setForeground(Color.blue.darker().darker());
+		lblPollVoter.setFont(sansLabel);
+
 		lblPrecinct = new JLabel("Precinct");
 		lblPrecinct.setHorizontalAlignment(JLabel.RIGHT);
 		lblPrecinct.setForeground(Color.blue.darker().darker());
@@ -208,6 +224,11 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 		lblZip.setForeground(Color.blue.darker().darker());
 		lblZip.setFont(sansLabel);
 
+		lblElectionExclude = new JLabel("Exc. Election");
+		lblElectionExclude.setHorizontalAlignment(JLabel.RIGHT);
+		lblElectionExclude.setForeground(Color.green.darker().darker());
+		lblElectionExclude.setFont(sansLabel);
+
 		lblNumVotes = new JLabel("Times Voted");
 		lblNumVotes.setHorizontalAlignment(JLabel.RIGHT);
 		lblNumVotes.setForeground(Color.green.darker().darker());
@@ -227,7 +248,7 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 		lblAgeMax.setHorizontalAlignment(JLabel.RIGHT);
 		lblAgeMax.setForeground(Color.green.darker().darker());
 		lblAgeMax.setFont(sansLabel);
-
+/*
 		lblLat = new JLabel("Latitude");
 		lblLat.setHorizontalAlignment(JLabel.RIGHT);
 		lblLat.setForeground(Color.gray);
@@ -237,7 +258,7 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 		lblLong.setHorizontalAlignment(JLabel.RIGHT);
 		lblLong.setForeground(Color.gray);
 		lblLong.setFont(sansLabel);
-
+*/
 		lblCtlPanel = new JLabel("Control Panel");
 		lblCtlPanel.setHorizontalAlignment(JLabel.CENTER);
 		lblCtlPanel.setFont(sansHeading);
@@ -260,43 +281,48 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 			/* Text Fields */
 		tfPrecinct = new JTextField(4);
 		tfPrecinct.setFont(sansField);
-		tfPrecinct.setForeground(Color.magenta);
+		tfPrecinct.setForeground(Color.magenta.darker());
 		tfPrecinct.addKeyListener(this);
 
 		tfStreetNo = new JTextField(3);
 		tfStreetNo.setFont(sansField);
-		tfStreetNo.setForeground(Color.magenta);
+		tfStreetNo.setForeground(Color.magenta.darker());
 		tfStreetNo.addKeyListener(this);
 
 		tfStreet = new JTextField(10);
 		tfStreet.setFont(sansField);
-		tfStreet.setForeground(Color.magenta);
+		tfStreet.setForeground(Color.magenta.darker());
 		tfStreet.addKeyListener(this);
 
 		tfParty = new JTextField(15);
 		tfParty.setFont(sansField);
-		tfParty.setForeground(Color.magenta);
+		tfParty.setForeground(Color.magenta.darker());
 		tfParty.addKeyListener(this);
 
 		tfLastName = new JTextField(15);
 		tfLastName.setFont(sansField);
-		tfLastName.setForeground(Color.magenta);
+		tfLastName.setForeground(Color.magenta.darker());
 		tfLastName.addKeyListener(this);
 
 		tfFirstName = new JTextField(15);
 		tfFirstName.setFont(sansField);
-		tfFirstName.setForeground(Color.magenta);
+		tfFirstName.setForeground(Color.magenta.darker());
 		tfFirstName.addKeyListener(this);
 
 		tfCity = new JTextField(15);
 		tfCity.setFont(sansField);
-		tfCity.setForeground(Color.magenta);
+		tfCity.setForeground(Color.magenta.darker());
 		tfCity.addKeyListener(this);
 
 		tfZip = new JTextField(4);
 		tfZip.setFont(sansField);
-		tfZip.setForeground(Color.magenta);
+		tfZip.setForeground(Color.magenta.darker());
 		tfZip.addKeyListener(this);
+
+		tfElectionExclude = new JTextField(8);
+		tfElectionExclude.setFont(sansField);
+		tfElectionExclude.setForeground(Color.magenta);
+		tfElectionExclude.addKeyListener(this);
 
 		tfNumVotes = new JTextField(1);
 		tfNumVotes.setFont(sansField);
@@ -357,6 +383,24 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 		cbOdd.setForeground(Color.green.darker().darker());
 		cbOdd.setSelected(true);
 
+		tooltipText = "Include vote by mail voters.";
+		cbMailVoter= new JCheckBox("By Mail");
+		cbMailVoter.setHorizontalTextPosition(SwingConstants.LEFT);
+		cbMailVoter.setFont(sansLabel);
+		cbMailVoter.setToolTipText(tooltipText);
+		cbMailVoter.setForeground(Color.green.darker().darker());
+		cbMailVoter.setSelected(true);
+
+		tooltipText = "Include voters who vote at the polls.";
+		cbPollVoter = new JCheckBox("At Polls");
+		cbPollVoter.setHorizontalTextPosition(SwingConstants.LEFT);
+		cbPollVoter.setFont(sansLabel);
+		cbPollVoter.setToolTipText(tooltipText);
+		cbPollVoter.setForeground(Color.green.darker().darker());
+		cbPollVoter.setSelected(true);
+
+
+
 			/* Buttons */
 		tooltipText = "To search for voters, one of the blue fields must have an entry.";
 		btnSearch = new JButton("Search");
@@ -387,6 +431,10 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 			/* Build Search Panel */
 		tooltipText = "To search for voters, one of the blue fields must have an entry.";
 		ctlPanelCenterCenter.setToolTipText(tooltipText);
+//		ctlPanelCenterCenter.add(lblMailVoter);
+		ctlPanelCenterCenter.add(cbMailVoter);
+//		ctlPanelCenterCenter.add(lblPollVoter);
+		ctlPanelCenterCenter.add(cbPollVoter);
 		ctlPanelCenterCenter.add(lblPrecinct);
 		ctlPanelCenterCenter.add(tfPrecinct);
 		ctlPanelCenterCenter.add(lblStreetNo);
@@ -403,6 +451,8 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 		ctlPanelCenterCenter.add(tfCity);
 		ctlPanelCenterCenter.add(lblZip);
 		ctlPanelCenterCenter.add(tfZip);
+		ctlPanelCenterCenter.add(lblElectionExclude);
+		ctlPanelCenterCenter.add(tfElectionExclude);
 		ctlPanelCenterCenter.add(lblNumVotes);
 		ctlPanelCenterCenter.add(tfNumVotes);
 		ctlPanelCenterCenter.add(lblRegAgo);
@@ -411,10 +461,12 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 		ctlPanelCenterCenter.add(tfAgeMin);
 		ctlPanelCenterCenter.add(lblAgeMax);
 		ctlPanelCenterCenter.add(tfAgeMax);
+	/*
 		ctlPanelCenterCenter.add(lblLat);
 		ctlPanelCenterCenter.add(tfLat);
 		ctlPanelCenterCenter.add(lblLong);
 		ctlPanelCenterCenter.add(tfLong);
+	*/
 		ctlPanelCenterCenter.validate();
 
 		tooltipText = "If both, or neither, checkbox is selected, you will get all addresses.";
@@ -513,10 +565,13 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 			public void actionPerformed( ActionEvent e ) {
 				cbEven.setSelected(true);
 				cbOdd.setSelected(true);
+				cbMailVoter.setSelected(true);
+				cbPollVoter.setSelected(true);
 				tfFirstName.setText("");
 				tfLastName.setText("");
 				tfPrecinct.setText("");
 				tfZip.setText("");
+				tfElectionExclude.setText("");
 //				tfLat.setText("");
 //				tfLong.setText("");
 				tfStreet.setText("");
@@ -620,6 +675,11 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 		zip = zip.replaceAll("[*]+", "%");
 		zip = zip.replaceAll("[?]", "_");
 
+		String excludeIfVotedInElection = SafeChar.text1(tfElectionExclude.getText());
+		excludeIfVotedInElection = excludeIfVotedInElection.replace("\'", "\'\'");
+		excludeIfVotedInElection = excludeIfVotedInElection.replaceAll("[*]+", "%");
+		excludeIfVotedInElection = excludeIfVotedInElection.replaceAll("[?]", "_");
+
 		String streetno = SafeChar.text1(tfStreetNo.getText());
 		streetno = streetno.replace("\'", "\'\'");
 		streetno = streetno.replaceAll("[*]+", "%");
@@ -634,11 +694,11 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 		String ageMax = SafeChar.num2(tfAgeMax.getText());
 
 
-		boolean oddOnly = false;
+		boolean oddOnly  = false;
 		boolean evenOnly = false;
 
-		if ((cbEven.isSelected() && cbOdd.isSelected()) ||
-						(!cbEven.isSelected() && !cbOdd.isSelected()))
+		if ((cbEven.isSelected() && cbOdd.isSelected())
+				|| (!cbEven.isSelected() && !cbOdd.isSelected()))
 		{
 			oddOnly = false;
 			evenOnly = false;
@@ -651,7 +711,24 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 		}
 //		System.out.println("cbEven = "+ cbEven.isSelected() + ", cdOdd = "+ cbOdd.isSelected());
 
-		String temp;
+		boolean mailVoters = false;
+		boolean pollVoters = false;
+
+		if((cbMailVoter.isSelected() && cbPollVoter.isSelected())
+			|| (!cbMailVoter.isSelected() && !cbPollVoter.isSelected() )) {
+			mailVoters = true;
+			pollVoters = true;
+		} else if(cbMailVoter.isSelected()) {
+			mailVoters = true;
+		} else if (cbPollVoter.isSelected()) {
+			pollVoters = true;
+		}
+
+
+		/**
+		 * Convert strings to Integers
+		 */
+			String temp;
 		temp = SafeChar.num2(tfNumVotes.getText());
 		if (temp.length() > 0) {
 			numvotes = Integer.parseInt(temp);
@@ -765,6 +842,27 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 				}
 				whereClause += ("(voters.sHouseNum%2=1) ");
 			}
+			if(mailVoters){
+				if(whereClause.length() > 6)
+				{
+					whereClause += "AND ";
+				}
+				if(pollVoters)
+				{
+					whereClause += "szAVStatusAbbr IN ('OS-TEMP','Perm VBM','') ";
+				} else {
+					whereClause += "szAVStatusAbbr IN ('OS-TEMP','Perm VBM') ";
+				}
+			} else {
+				if(pollVoters) {
+					if(whereClause.length() > 6)
+					{
+						whereClause += "AND ";
+					}
+					whereClause += "szAVStatusAbbr IN ('') ";
+				}
+			}
+
 			if (street.length() > 0) {
 				if (whereClause.length() > 6) {
 					whereClause += "AND ";
@@ -815,8 +913,14 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 							" AND ((age)/365)-1 <= " +
 							ageMax +
 							" AND agoreg/365 >= " +
-							regago +
-							" ";
+							regago;
+						if(excludeIfVotedInElection.length() > 0) {
+							having += " AND COUNT(CASE WHEN history.sElectionAbbr LIKE '" +
+											excludeIfVotedInElection + "' " +
+											"THEN 1 ELSE null END) = 0 ";
+						}else{
+							having += " ";
+						}
 
 /*
 			SELECT *, voters.lVoterUniqueID, count(IF(history.szCountedFlag = 'YES',1,NULL))
@@ -832,7 +936,7 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 //			System.out.println("groupBy:" + groupBy);
 //			System.out.println("having: " + having);
 			query = selectNumVotes + whereClause + groupBy + having + orderBy;
-//			System.out.println("QUERY: " + query);
+			System.out.println("QUERY: " + query);
 			resultSet = doQuery(query, voterDB);
 		} else
 		{
