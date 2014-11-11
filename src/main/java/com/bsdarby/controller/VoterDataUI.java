@@ -3,7 +3,6 @@ package com.bsdarby.controller;
 import com.bsdarby.model.DatabaseManager;
 import com.bsdarby.model.HistoryTableModel;
 import com.bsdarby.model.VoterTableModel;
-import com.bsdarby.controller.ExportList;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -539,8 +538,7 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 
 		btnExport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ExportList exportList;
-				exportList =  new ExportList(resultSet);
+				new DataExporter(resultSet);
 		}});
 
 		btnHelp.addActionListener(new ActionListener() {
@@ -646,49 +644,49 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 		String query;
 
 		String last = SafeChar.text1(tfLastName.getText());
-		last = last.replaceAll("\'", "\'\'");
-		last = last.replaceAll("[*]+", "%");
-		last = last.replaceAll("[?]", "_");
+//		last = last.replaceAll("\'", "\'\'");
+//		last = last.replaceAll("[*]+", "%");
+//		last = last.replaceAll("[?]", "_");
 
 		String first = SafeChar.text1(tfFirstName.getText());
-		first = first.replaceAll("\'", "\'\'");
-		first = first.replaceAll("[*]+", "%");
-		first = first.replaceAll("[?]", "_");
+//		first = first.replaceAll("\'", "\'\'");
+//  	first = first.replaceAll("[*]+", "%");
+//		first = first.replaceAll("[?]", "_");
 
 		String party = SafeChar.text1(tfParty.getText());
-		party = party.replace("\'", "\'\'");
-		party = party.replaceAll("[*]+", "%");
-		party = party.replaceAll("[?]", "_");
+//		party = party.replace("\'", "\'\'");
+//		party = party.replaceAll("[*]+", "%");
+//		party = party.replaceAll("[?]", "_");
 
 		String city = SafeChar.text1(tfCity.getText());
-		city = city.replace("\'", "\'\'");
-		city = city.replaceAll("[*]+", "%");
-		city = city.replaceAll("[?]", "_");
+//		city = city.replace("\'", "\'\'");
+//		city = city.replaceAll("[*]+", "%");
+//		city = city.replaceAll("[?]", "_");
 
 		precinct = SafeChar.text1(tfPrecinct.getText());
-		precinct = precinct.replace("\'", "\'\'");
-		precinct = precinct.replaceAll("[*]+", "%");
-		precinct = precinct.replaceAll("[?]", "_");
+//		precinct = precinct.replace("\'", "\'\'");
+//		precinct = precinct.replaceAll("[*]+", "%");
+//		precinct = precinct.replaceAll("[?]", "_");
 
 		String zip = SafeChar.text1(tfZip.getText());
-		zip = zip.replace("\'", "\'\'");
-		zip = zip.replaceAll("[*]+", "%");
-		zip = zip.replaceAll("[?]", "_");
+//		zip = zip.replace("\'", "\'\'");
+//		zip = zip.replaceAll("[*]+", "%");
+//		zip = zip.replaceAll("[?]", "_");
 
 		String excludeIfVotedInElection = SafeChar.text1(tfElectionExclude.getText());
-		excludeIfVotedInElection = excludeIfVotedInElection.replace("\'", "\'\'");
-		excludeIfVotedInElection = excludeIfVotedInElection.replaceAll("[*]+", "%");
-		excludeIfVotedInElection = excludeIfVotedInElection.replaceAll("[?]", "_");
+//		excludeIfVotedInElection = excludeIfVotedInElection.replace("\'", "\'\'");
+//		excludeIfVotedInElection = excludeIfVotedInElection.replaceAll("[*]+", "%");
+//		excludeIfVotedInElection = excludeIfVotedInElection.replaceAll("[?]", "_");
 
 		String streetno = SafeChar.text1(tfStreetNo.getText());
-		streetno = streetno.replace("\'", "\'\'");
-		streetno = streetno.replaceAll("[*]+", "%");
-		streetno = streetno.replaceAll("[?]", "_");
+//		streetno = streetno.replace("\'", "\'\'");
+//		streetno = streetno.replaceAll("[*]+", "%");
+//		streetno = streetno.replaceAll("[?]", "_");
 
 		String street = SafeChar.text1(tfStreet.getText());
-		street = street.replace("\'", "\'\'");
-		street = street.replaceAll("[*]+", "%");
-		street = street.replaceAll("[?]", "_");
+//		street = street.replace("\'", "\'\'");
+//		street = street.replaceAll("[*]+", "%");
+//		street = street.replaceAll("[?]", "_");
 
 		String ageMin = SafeChar.num2(tfAgeMin.getText());
 		String ageMax = SafeChar.num2(tfAgeMax.getText());

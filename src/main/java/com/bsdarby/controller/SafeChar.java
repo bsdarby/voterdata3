@@ -82,10 +82,13 @@ public class SafeChar {
 	 */
 	public static String text1( String input ) {
 		String result = input.replaceAll("[^a-zA-Z0-9 .*?/\'%_-]", "").trim();
+		result = result.replaceAll("[?]", "_");
+		result = result.replaceAll("[*]+", "%");
+		result = result.replaceAll("_%", "%");
+		result = result.replaceAll("%_", "%");
 		result = result.replaceAll("[%]{2,}", "%");
-		result = result.replaceAll("[_%]", "%");
-		result = result.replaceAll("[%_]", "%");
-		result = result.replace("'", "\'");
+//		result = result.replace("'", "\'\'");
+		result = result.replaceAll("\'", "\'\'");
 		return result;
 	}
 }

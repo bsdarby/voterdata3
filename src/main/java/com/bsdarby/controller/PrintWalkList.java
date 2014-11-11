@@ -108,7 +108,7 @@ public class PrintWalkList extends JFrame {
 		tblWalking.removeColumn(tblWalking.getColumnModel().getColumn(1));
 
 		tblWalking.addColumn(tblWalking.getColumnModel().getColumn(3));
-		tblWalking.getColumnModel().getColumn(1).setPreferredWidth(3);
+		tblWalking.getColumnModel().getColumn(1).setPreferredWidth(2);
 		tblWalking.removeColumn(tblWalking.getColumnModel().getColumn(3));
 
 		tblWalking.addColumn(tblWalking.getColumnModel().getColumn(3));
@@ -119,11 +119,11 @@ public class PrintWalkList extends JFrame {
 		tblWalking.getColumnModel().getColumn(1).setPreferredWidth(60);
 		tblWalking.removeColumn(tblWalking.getColumnModel().getColumn(2));
 
-		tblWalking.addColumn(tblWalking.getColumnModel().getColumn(5));
-		tblWalking.getColumnModel().getColumn(1).setPreferredWidth(135);
-		tblWalking.removeColumn(tblWalking.getColumnModel().getColumn(5));
+		tblWalking.addColumn(tblWalking.getColumnModel().getColumn(14));
+		tblWalking.getColumnModel().getColumn(14).setPreferredWidth(135);
+		tblWalking.removeColumn(tblWalking.getColumnModel().getColumn(14));
 
-		tblWalking.removeColumn(tblWalking.getColumnModel().getColumn(0));
+//		tblWalking.removeColumn(tblWalking.getColumnModel().getColumn(0));
 		tblWalking.removeColumn(tblWalking.getColumnModel().getColumn(0));
 		tblWalking.removeColumn(tblWalking.getColumnModel().getColumn(0));
 		tblWalking.removeColumn(tblWalking.getColumnModel().getColumn(0));
@@ -388,7 +388,8 @@ public class PrintWalkList extends JFrame {
 //		if (headerBox.isSelected())
 //		{
 						/* create a MessageFormat around the header text */
-		header = new MessageFormat("Precinct " + precinct + " List – " + voters + " voters – " + households + " " +
+		header = new MessageFormat("Precinct " + precinct +
+						" List – " + voters + " voters – " + households + " " +
 						"households" +
 						" – Page {0}");
 //			header = new MessageFormat(headerField.getText());
@@ -638,7 +639,6 @@ public class PrintWalkList extends JFrame {
 					}
 				case 12:
 				case 13:
-				case 14:
 					try
 					{
 						return resultSet.getObject(column + 1);
@@ -649,6 +649,7 @@ public class PrintWalkList extends JFrame {
 						DatabaseManager.printSQLException(e);
 						return null;
 					}
+				case 14:
 				case 15:
 					return "Yes No UnD NH YS Do";
 
