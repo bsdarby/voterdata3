@@ -1,8 +1,9 @@
 package com.bsdarby.controller;
 
-import com.bsdarby.model.DatabaseManager;
+import com.bsdarby.model.Database;
 import com.bsdarby.model.HistoryTableModel;
 import com.bsdarby.model.VoterTableModel;
+import com.bsdarby.view.VoterMainView;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -28,7 +29,7 @@ import java.util.Locale;
  * Created by bsdarby on 8/27/14.
  */
 public class VoterDataUI extends JFrame implements KeyListener, RowSorterListener {
-	private DatabaseManager voterDB;
+	private Database voterDB;
 	private NumberFormat df1 = new DecimalFormat("#,###0");
 
 	private static final Double WIDTH = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
@@ -40,8 +41,9 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 	int vpHeight = height * 4 / 5;
 	int hpHeight = height - vpHeight;
 	String tooltipText;
-	ResultSet resultSetW = null;
 	ResultSet resultSet = null;
+	ResultSet resultSetH = null;
+	ResultSet resultSetW = null;
 	Integer voterID = 0;
 	int voterIDTrigger = 0;
 	private PageFormat pageFormat;
@@ -123,13 +125,21 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 					cbMailVoter,
 					cbPollVoter;
 
-	public VoterDataUI( final DatabaseManager voterDB ) {
+	public VoterDataUI( final Database voterDB ) {
 		this.voterDB = voterDB;
 		setSize(new Dimension(width, height));
 		setLocationRelativeTo(null);
 		setTitle("Voter Data");
 		vdPane = getContentPane();
 		vdPane.setLayout(new BorderLayout());
+
+		/**
+		 * Build Main View
+		 */
+
+		VoterMainView mainPanel = new VoterMainView(getContentPane());
+
+
 
 		/* Panels */
 		JPanel northPanel;
@@ -548,7 +558,7 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed( ActionEvent evt ) {
-				voterDB.close();
+				voterDB.closeDBResources();
 				System.exit(0);
 		}});
 
@@ -586,7 +596,7 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 
 	}
 
-	private void historySearch(Integer voterID, DatabaseManager voterDB) {
+	private void historySearch(Integer voterID, Database voterDB) {
 		ResultSet resultSetH;
 		String whereClauseH = " WHERE " +
 						"lVoterUniqueId " +
@@ -632,7 +642,7 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 	}
 
 
-	private ResultSet voterSearch(DatabaseManager voterDB) {
+	private ResultSet voterSearch(Database voterDB) {
 
 		boolean boolShowTrans = false;
 		boolean boolNumVotes = false;
@@ -644,50 +654,14 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 		String query;
 
 		String last = SafeChar.text1(tfLastName.getText());
-//		last = last.replaceAll("\'", "\'\'");
-//		last = last.replaceAll("[*]+", "%");
-//		last = last.replaceAll("[?]", "_");
-
 		String first = SafeChar.text1(tfFirstName.getText());
-//		first = first.replaceAll("\'", "\'\'");
-//  	first = first.replaceAll("[*]+", "%");
-//		first = first.replaceAll("[?]", "_");
-
 		String party = SafeChar.text1(tfParty.getText());
-//		party = party.replace("\'", "\'\'");
-//		party = party.replaceAll("[*]+", "%");
-//		party = party.replaceAll("[?]", "_");
-
 		String city = SafeChar.text1(tfCity.getText());
-//		city = city.replace("\'", "\'\'");
-//		city = city.replaceAll("[*]+", "%");
-//		city = city.replaceAll("[?]", "_");
-
 		precinct = SafeChar.text1(tfPrecinct.getText());
-//		precinct = precinct.replace("\'", "\'\'");
-//		precinct = precinct.replaceAll("[*]+", "%");
-//		precinct = precinct.replaceAll("[?]", "_");
-
 		String zip = SafeChar.text1(tfZip.getText());
-//		zip = zip.replace("\'", "\'\'");
-//		zip = zip.replaceAll("[*]+", "%");
-//		zip = zip.replaceAll("[?]", "_");
-
 		String excludeIfVotedInElection = SafeChar.text1(tfElectionExclude.getText());
-//		excludeIfVotedInElection = excludeIfVotedInElection.replace("\'", "\'\'");
-//		excludeIfVotedInElection = excludeIfVotedInElection.replaceAll("[*]+", "%");
-//		excludeIfVotedInElection = excludeIfVotedInElection.replaceAll("[?]", "_");
-
 		String streetno = SafeChar.text1(tfStreetNo.getText());
-//		streetno = streetno.replace("\'", "\'\'");
-//		streetno = streetno.replaceAll("[*]+", "%");
-//		streetno = streetno.replaceAll("[?]", "_");
-
 		String street = SafeChar.text1(tfStreet.getText());
-//		street = street.replace("\'", "\'\'");
-//		street = street.replaceAll("[*]+", "%");
-//		street = street.replaceAll("[?]", "_");
-
 		String ageMin = SafeChar.num2(tfAgeMin.getText());
 		String ageMax = SafeChar.num2(tfAgeMax.getText());
 
@@ -949,7 +923,7 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 			}
 		} catch (SQLException e)
 		{
-			DatabaseManager.printSQLException(e);
+			Database.printSQLException( e );
 		}
 		return null;
 	}
@@ -1078,7 +1052,7 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 		{
 			System.out.println("SQL Exception caught at " +
 							"PrintWalkList/getCounts.");
-			DatabaseManager.printSQLException(e);
+			Database.printSQLException( e );
 			return -1;
 		}
 		return households;
@@ -1092,12 +1066,12 @@ public class VoterDataUI extends JFrame implements KeyListener, RowSorterListene
 
 	}
 
-	protected ResultSet doQuery( String query, DatabaseManager voterDB ) {
+	protected ResultSet doQuery( String query, Database voterDB ) {
 		voterDB.dbQuery(query);
 		return voterDB.getResultSet();
 	}
 
-	private ResultSet doQueryH(String queryH, DatabaseManager voterDB) {
+	private ResultSet doQueryH(String queryH, Database voterDB) {
 		voterDB.dbQueryH(queryH);
 		return voterDB.getResultSetH();
 	}

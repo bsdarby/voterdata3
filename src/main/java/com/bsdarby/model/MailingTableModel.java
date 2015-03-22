@@ -176,7 +176,7 @@ public class MailingTableModel extends AbstractTableModel {
 			return resultSet.getObject(column + 1);
 		} catch (SQLException e)
 		{
-			DatabaseManager.printSQLException(e);
+			Database.printSQLException(e);
 //			e.printStackTrace();
 			return null;
 		}
@@ -201,7 +201,7 @@ public class MailingTableModel extends AbstractTableModel {
 			resultSet.absolute(row + 1);
 		} catch (SQLException e)
 		{
-			DatabaseManager.printSQLException(e);
+			Database.printSQLException( e );
 			return null;
 		}
 
@@ -224,7 +224,7 @@ public class MailingTableModel extends AbstractTableModel {
 				{
 					System.out.println("SQL Exception caught at " +
 									"VoterTableModel/getValueAt/switch.");
-					DatabaseManager.printSQLException(e);
+					Database.printSQLException( e );
 					return null;
 				}
 			case 10:
@@ -237,13 +237,13 @@ public class MailingTableModel extends AbstractTableModel {
 				{
 					if (null != resultSet.getObject(column + 1))
 					{
-						return DatabaseManager.years((Date) (resultSet.getObject(column + 1)));
+						return Database.calcTimeInYears( (Date) ( resultSet.getObject( column + 1 ) ) );
 					}
 				} catch (SQLException e)
 				{
 					System.out.println("SQL Exception caught at " +
 									"VoterTableModel/getValueAt/switch.");
-					DatabaseManager.printSQLException(e);
+					Database.printSQLException( e );
 					return null;
 				}
 

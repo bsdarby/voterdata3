@@ -1,6 +1,6 @@
 package com.bsdarby.controller;
 
-import com.bsdarby.model.DatabaseManager;
+import com.bsdarby.model.Database;
 
 import javax.swing.*;
 import javax.swing.event.TableModelListener;
@@ -244,7 +244,7 @@ public class PrintWalkList extends JFrame {
 		{
 			System.out.println("SQL Exception caught at " +
 							"PrintWalkList/getCounts.");
-			DatabaseManager.printSQLException(e);
+			Database.printSQLException( e );
 		}
 	}
 
@@ -557,7 +557,7 @@ public class PrintWalkList extends JFrame {
 				resultSet.absolute(row + 1);
 			} catch (SQLException e)
 			{
-				DatabaseManager.printSQLException(e);
+				Database.printSQLException( e );
 				return null;
 			}
 
@@ -575,7 +575,7 @@ public class PrintWalkList extends JFrame {
 					{
 						System.out.println("SQL Exception caught at " +
 										"PrintWalkList/getValueAt/switch.");
-						DatabaseManager.printSQLException(e);
+						Database.printSQLException( e );
 						return null;
 					}
 				case 5:
@@ -605,7 +605,7 @@ public class PrintWalkList extends JFrame {
 					{
 						System.out.println("SQL Exception caught at " +
 										"PrintWalkList/getValueAt/switch.");
-						DatabaseManager.printSQLException(e);
+						Database.printSQLException( e );
 						return null;
 					}
 				case 6:
@@ -619,7 +619,7 @@ public class PrintWalkList extends JFrame {
 					{
 						System.out.println("SQL Exception caught at " +
 										"PrintWalkList/getValueAt/switch.");
-						DatabaseManager.printSQLException(e);
+						Database.printSQLException( e );
 						return null;
 					}
 				case 10:
@@ -628,13 +628,13 @@ public class PrintWalkList extends JFrame {
 					{
 						if (null != resultSet.getObject(column + 1))
 						{
-							return DatabaseManager.years((Date) (resultSet.getObject(column + 1)));
+							return Database.calcTimeInYears( (Date) ( resultSet.getObject( column + 1 ) ) );
 						}
 					} catch (SQLException e)
 					{
 						System.out.println("SQL Exception caught at " +
 										"PrintWalkList/getValueAt/switch.");
-						DatabaseManager.printSQLException(e);
+						Database.printSQLException( e );
 						return null;
 					}
 				case 12:
@@ -646,7 +646,7 @@ public class PrintWalkList extends JFrame {
 					{
 						System.out.println("SQL Exception caught at " +
 										"PrintWalkList/getValueAt/switch.");
-						DatabaseManager.printSQLException(e);
+						Database.printSQLException( e );
 						return null;
 					}
 				case 14:

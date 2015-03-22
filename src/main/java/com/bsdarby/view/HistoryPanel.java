@@ -1,6 +1,7 @@
 package com.bsdarby.view;
 
 import javax.swing.*;
+import java.sql.ResultSet;
 
 /**
  * Class in voterdata2/com.bsdarby.view.
@@ -8,7 +9,7 @@ import javax.swing.*;
  */
 public class HistoryPanel extends JPanel {
 
-	public HistoryPanel(){
+	public HistoryPanel(ResultSet resultSetH){
 
 	}
 }

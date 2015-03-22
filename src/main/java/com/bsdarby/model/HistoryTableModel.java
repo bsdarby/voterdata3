@@ -163,7 +163,7 @@ public class HistoryTableModel extends AbstractTableModel {
 		} catch (SQLException e)
 		{
 			System.out.println("SQL  Exception caught in HistoryTableModel/getValueAt.");
-			DatabaseManager.printSQLException(e);
+			Database.printSQLException( e );
 			return null;
 		}
 	}

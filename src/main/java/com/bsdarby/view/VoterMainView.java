@@ -1,6 +1,6 @@
 package com.bsdarby.view;
 
-import com.bsdarby.model.DatabaseManager;
+import com.bsdarby.model.Database;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,15 +13,15 @@ import java.text.NumberFormat;
  * Created by bsdarby on 11/5/14.
  */
 public class VoterMainView extends JFrame {
-	private DatabaseManager voterDB;
+	private Database voterDB;
 	private NumberFormat df1 = new DecimalFormat("#,###0");
-	private ResultSet resultSet;
+	ResultSet resultSet, resultSetH;
 	JPanel dataPanel;
 	JPanel dataPanelVoters;
 	JPanel dataPanelHistory;
 
 
-	public VoterMainView() {
+	public VoterMainView( Container contentPane ) {
 
 		// open database
 
@@ -35,7 +35,7 @@ public class VoterMainView extends JFrame {
 		Container vdPane = getContentPane();
 		ControlPanel controlPanel = new ControlPanel();
 		VoterPanel voterPanel = new VoterPanel(resultSet);
-		HistoryPanel historyPanel = new HistoryPanel();
+		HistoryPanel historyPanel = new HistoryPanel(resultSetH);
 
 
 

@@ -86,9 +86,6 @@ public class DataExporter extends JFrame{
 		if (JFileChooser.APPROVE_OPTION == returnVal) {
 			targetFile = fileChooser.getSelectedFile();
 			int maxLabelLength = 70;
-//			lblShowFilePath.setText(TextArranger.makeEllipsis(targetFile.getPath(),maxLabelLength));
-//			System.out.println("Text Arranger results: "
-//							+ TextArranger.makeEllipsis(targetFile.getPath(), maxLabelLength));
 			lblFile.setText("File: " + TextArranger.makeEllipsis(targetFile.getPath(),maxLabelLength));
 			System.out.println("Length of filename = " +
 							(TextArranger.makeEllipsis(targetFile.getPath(), maxLabelLength).length() + 6)
